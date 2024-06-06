@@ -4,12 +4,16 @@ import static java.lang.System.out;
 
 import java.util.*;
 
+
+
+import studentEventModel.AddEventModel;
 import studentEventModel.AdminAddModel;
 import studentEventModel.DepartmentModel;
 import studentEventModel.StudentAddModel;
 import studentEventRepository.StudentAddRepository;
 import studentEventService.AdminService;
 import studentEventService.DeparmentService;
+import studentEventService.EventService;
 import studentEventService.studentaddservice;
 
 public class AlumniClientApplication {
@@ -19,44 +23,23 @@ public class AlumniClientApplication {
 		studentaddservice studSer = new studentaddservice();
 		AdminService AddSer = new AdminService();
 		DeparmentService Dser = new DeparmentService();
+		EventService Eser = new EventService();
 
 		do {
 			Scanner sc = new Scanner(System.in);
 			int choice;
-			System.out.println("press 1:Add new Admin");
-			System.out.println("press 2:login exsting Admin");
+
+			System.out.println("press :login exsting Admin");
 			choice = sc.nextInt();
 			switch (choice) {
 
 			case 1:
 
-				out.println("Enter username");
+				System.out.println("Enter username ");
 				sc.nextLine();
 				String userName = sc.nextLine();
 				System.out.println("Enter Password");
 				String password = sc.nextLine();
-
-				AdminAddModel model1 = new AdminAddModel();
-				model1.setUser_name(userName);
-				model1.setPassword(password);
-
-				boolean b = AddSer.isAddAdmin(model1);
-
-				if (b) {
-
-					System.out.println("Admin Added succesfully");
-				} else {
-					System.out.println("some problem is there ");
-
-				}
-				break;
-			case 2:
-
-				System.out.println("Enter username ");
-				sc.nextLine();
-				userName = sc.nextLine();
-				System.out.println("Enter Password");
-				password = sc.nextLine();
 				int id1 = AddSer.getuserBypassword(password);
 				int id = AddSer.getuserByusername(userName);
 
@@ -66,9 +49,11 @@ public class AlumniClientApplication {
 
 				else if (id != -1 && id1 != -1) {
 
-					System.out.println("Press 1: Add New Student ");
-					System.out.println("Press 2: Add department ");
-					System.out.println("Press 3: Add New Student event ");
+					System.out.println("press 1:Add new Admin");
+					System.out.println("Press 2: Add New Student ");
+					System.out.println("Press 3: Add Department ");
+					 
+
 					System.out.println("Press 4: Send sms to Student for event ");
 					System.out.println("Press 5: take  attandace ");
 					System.out.println("Press 6: take  review ");
@@ -76,6 +61,29 @@ public class AlumniClientApplication {
 					choice = sc.nextInt();
 					switch (choice) {
 					case 1:
+
+						out.println("Enter username");
+						sc.nextLine();
+						userName = sc.nextLine();
+						System.out.println("Enter Password");
+						password = sc.nextLine();
+
+						AdminAddModel model1 = new AdminAddModel();
+						model1.setUser_name(userName);
+						model1.setPassword(password);
+
+						boolean b = AddSer.isAddAdmin(model1);
+
+						if (b) {
+
+							System.out.println("Admin Added succesfully");
+						} else {
+							System.out.println("some problem is there ");
+
+						}
+						break;
+
+					case 2:
 
 						System.out.println("Press 1: Add New Student manualy ");
 						System.out.println("Press 2: Add Bulk Student");
@@ -210,27 +218,22 @@ public class AlumniClientApplication {
 
 						break;
 
-					case 2:
-
-						System.out.println("1.Add Deparmrnt");
-						System.out.println("2.view Deparmrnt");
-						choice = sc.nextInt();
-						
-						switch(choice) {
-						
-						case 1:
+						case 3:
 							
 							System.out.println("Enter Department name");
 							sc.nextLine();
-							String DepartmentName = sc.nextLine();
+							 String D_name = sc.nextLine();
 							System.out.println("Enter HOD name");
 							String Hod_name = sc.nextLine();
+							id = Dser.getDepById(D_name);
+							DepartmentModel model3 = new DepartmentModel();
+							 
+							model3.setD_name(D_name);
+							model3.setH_name(Hod_name);
+							
+							 
 
-							DepartmentModel model = new DepartmentModel();
-							model.setD_name(DepartmentName);
-							model.setH_name(Hod_name);
-
-							b = Dser.isAddDepartment(model);
+							b = Dser.isAddDepartment(model3);
 
 							if (b) {
 								System.out.println("Department added succesfully");
@@ -238,13 +241,21 @@ public class AlumniClientApplication {
 								System.out.println("Somthing wrong");
 
 							}
-							break;
-							
+						System.out.println("1.Add Event");
+						System.out.println("2.view department");
+						
+					 
+						
+						choice= sc.nextInt();
+						switch(choice) {
+						
 						case 2:
+							
 							List<DepartmentModel> list = Dser.getallDepart();
 							if (list != null) {
 
-								list.forEach((m) -> out.println(m.getD_id() + "\t" + m.getD_name() + "\t"+ m.getH_name()));
+								list.forEach(
+										(m) -> out.println(m.getD_id() + "\t" + m.getD_name() + "\t" + m.getH_name()));
 
 							} else {
 
@@ -252,19 +263,58 @@ public class AlumniClientApplication {
 
 							}
 							break;
-						
-						
-						
-						
+						case 1:
+							
+							         System.out.println("Enter Event name");
+						             String EventName= sc.next();
+						             System.out.println("Enter Event date name");
+						             String E_date= sc.next();
+						             System.out.println("Enter Event place name");
+						             String E_place= sc.next();
+						             
+						             
+									AddEventModel aodel = new AddEventModel();
+									int Eid=new EventService().getEventId(EventName);
+									aodel.setE_name(EventName);
+									aodel.setE_date(E_date);
+									aodel.setE_place(E_place);
+									
+									
+									 
+									b = Eser.isAddEvent(aodel);
+
+									if (b) {
+										System.out.println("Event added succesfully");
+									} else {
+										System.out.println("Somthing wrong");
+
+									}
+
+								
+								
+								
+								
+							}
+							break;
+							
+							
 						}
+						
+						
+						
 
-						break;
-
+						 
+						 
+				}
+				
+                    break;
 					default:
 						System.out.println("Wrong choice");
 					}
-				}
-			}
+
+				
+			
+		
 
 		} while (true);
 

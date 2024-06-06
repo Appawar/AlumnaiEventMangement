@@ -11,5 +11,10 @@ public class EventService {
 		
 		return Evrepo.isAddEvent(model);
 	}
+	
+	public int getEventId(String EventName) {
+		
+		return Evrepo.getEventId(EventName);
+	}
 
 }

@@ -1,11 +1,12 @@
 package studentEventModel;
 
-public class AddEventModel {
+public class AddEventModel extends DepartmentModel{
 	
 	private int  E_id;
 	private String E_name;
 	private String E_place;
 	private String E_date;
+	
 	public int getE_id() {
 	 return E_id;
 	}

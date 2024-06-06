@@ -18,5 +18,7 @@ public class DeparmentService {
 		return Drepo.getallDepart();
 	}
 
-	 
+	public int getDepById( String D_name) {
+		return Drepo.getDepById(D_name);
+	}
 }
